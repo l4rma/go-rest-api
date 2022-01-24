@@ -4,7 +4,7 @@ Me trying to learn golang by coding a rest api using gorilla/mux and postgres.
 
 ### Todo:
 
-* [ ] "/" => "Hello world!"
+* [x] "/" => "Hello world!"
 * [ ] Database
 * [ ] Decide what X is
 * [ ] Show X by index (GET)
