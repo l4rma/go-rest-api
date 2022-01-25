@@ -4,10 +4,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func main() {
-
-}
-
 type Server struct {
 	Router *mux.Router
 	// Database
