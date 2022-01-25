@@ -5,11 +5,9 @@ Me trying to learn golang by coding a rest api using gorilla/mux and postgres.
 ### Todo:
 
 * [x] "/" => "Hello world!"
-* [ ] Database
-* [ ] Decide what X is
-* [ ] Show X by index (GET)
-* [ ] Show all X (GET)
-* [ ] Create X (POST)
-* [ ] Update X (PATCH/PUT?)
-* [ ] Delete X (DELETE)
+* [x] Database
+* [x] GET request
+* [x] POST request (bug: returns wrong id)
+* [ ] PATCH request
+* [ ] DELETE request
 * [ ] Serve some static pages (home, error)
