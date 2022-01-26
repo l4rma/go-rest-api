@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"rest-api/server/db/entity"
@@ -25,7 +24,6 @@ func NewBookController(service service.BookService) BookController {
 }
 
 func (*controller) GetBooks(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 	books, err := bookService.FindAll()
 	if err != nil {
 		log.Printf("Failed to get books, Error:%v", err)
@@ -33,21 +31,34 @@ func (*controller) GetBooks(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Error getting books"))
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(books)
+	var data = make([]entity.JsonBook, len(books))
+	for i, book := range books {
+		data[i] = mapBookToJSON(book)
+	}
+
+	sendResponse(w, r, data, http.StatusOK)
 }
 
 func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var book entity.Book
-	err := json.NewDecoder(r.Body).Decode(&book)
+	// Get JSON from request body
+	reqBook := entity.BookRequest{}
+	err := parseJson(w, r, &reqBook)
 	if err != nil {
-		log.Printf("Failed to add book, Error:%v", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Error adding book"))
+		log.Printf("Cannot parse post body. err=%v\n", err)
+		sendResponse(w, r, nil, http.StatusBadRequest)
 		return
 	}
-	err = bookService.Validate(&book)
+
+	// Create entity
+	book := &entity.Book{
+		ID:		0,
+		Title:	reqBook.Title,
+		Author:	reqBook.Author,
+		Year:	reqBook.Year,
+	}
+
+	// Validate entity
+	err = bookService.Validate(book)
 	if err != nil {
 		log.Printf("Failed to validate book, Error:%v", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -55,10 +66,11 @@ func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bookService.Create(&book)
+	//Save entity in database
+	bookService.Create(book)	
+	data := mapBookToJSON(book)
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(book)
+	sendResponse(w, r, data, http.StatusOK)
 }
 
 
