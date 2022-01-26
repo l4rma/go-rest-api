@@ -15,6 +15,7 @@ type BookRepository interface {
 	FindAll() ([]*entity.Book, error)
 	//UpdateById(id int64) (*entity.Book, error)
 	//DeleteById(id int64) (*entity.Book, error)
+	InsertDummyData(repo BookRepository)
 }
 
 type repo struct {
@@ -31,7 +32,7 @@ func (d *repo) Open() error {
 		return err
 	}
 	log.Println("Connected to database.")
-	
+
 	pg.MustExec(createTableBooks)
 
 	d.db = pg
@@ -41,4 +42,17 @@ func (d *repo) Open() error {
 
 func (d *repo) Close() error {
 	return d.db.Close()
+}
+
+func (d *repo) InsertDummyData(repo BookRepository) {
+	books := []*entity.Book{
+		{Title: "Hakkebakkeskogen", Author: "Thorbjørn Egner", Year: 1953},
+		{Title: "Folk og røvere i Kardemomme by", Author: "Thorbjørn Egner", Year: 1955},
+		{Title: "Refactoring", Author: "Martin Fowler", Year: 2019},
+	}
+
+	for _, book := range books {
+		repo.Save(book)
+		log.Printf("Inserted %v into db", book)
+	}
 }
