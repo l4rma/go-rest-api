@@ -7,7 +7,7 @@ Me trying to learn golang by coding a rest api using gorilla/mux and postgres.
 * [x] "/" => "Hello world!"
 * [x] Database
 * [x] GET request
-* [x] POST request (bug: returns wrong id)
+* [x] POST request
 * [ ] PATCH request
 * [ ] DELETE request
 * [ ] Serve some static pages (home, error)
