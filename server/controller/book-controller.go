@@ -3,8 +3,9 @@ package controller
 import (
 	"log"
 	"net/http"
-	"rest-api/server/db/entity"
-	"rest-api/server/service"
+
+	"github.com/l4rma/go-rest-api/server/db/entity"
+	"github.com/l4rma/go-rest-api/server/service"
 )
 
 type controller struct{}
@@ -51,10 +52,10 @@ func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
 
 	// Create entity
 	book := &entity.Book{
-		ID:		0,
-		Title:	reqBook.Title,
-		Author:	reqBook.Author,
-		Year:	reqBook.Year,
+		ID:     0,
+		Title:  reqBook.Title,
+		Author: reqBook.Author,
+		Year:   reqBook.Year,
 	}
 
 	// Validate entity
@@ -67,10 +68,8 @@ func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Save entity in database
-	bookService.Create(book)	
+	bookService.Create(book)
 	data := mapBookToJSON(book)
 
 	sendResponse(w, r, data, http.StatusOK)
 }
-
-

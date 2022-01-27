@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"rest-api/server/db/entity"
+
+	"github.com/l4rma/go-rest-api/server/db/entity"
 )
 
 func parseJson(w http.ResponseWriter, r *http.Request, data interface{}) error {
@@ -27,9 +28,9 @@ func sendResponse(w http.ResponseWriter, r *http.Request, data interface{}, stat
 
 func mapBookToJSON(b *entity.Book) entity.JsonBook {
 	return entity.JsonBook{
-		ID:		b.ID,
-		Title:	b.Title,
-		Author:	b.Author,
-		Year:	b.Year,
+		ID:     b.ID,
+		Title:  b.Title,
+		Author: b.Author,
+		Year:   b.Year,
 	}
 }

@@ -2,9 +2,10 @@ package service
 
 import (
 	"errors"
-	"rest-api/server/db/entity"
-	"rest-api/server/db/repository"
 	"testing"
+
+	"github.com/l4rma/go-rest-api/server/db/entity"
+	"github.com/l4rma/go-rest-api/server/db/repository"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

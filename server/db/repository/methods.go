@@ -1,6 +1,6 @@
 package repository
 
-import "rest-api/server/db/entity"
+import "github.com/l4rma/go-rest-api/server/db/entity"
 
 func (d *repo) Save(book *entity.Book) (int64, error) {
 	res, err := d.db.Exec(insertBook, book.Title, book.Author, book.Year)
@@ -11,7 +11,6 @@ func (d *repo) Save(book *entity.Book) (int64, error) {
 
 	return id, err
 }
-
 
 func (d *repo) FindAll() ([]*entity.Book, error) {
 	var books []*entity.Book

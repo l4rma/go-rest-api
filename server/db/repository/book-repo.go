@@ -2,7 +2,8 @@ package repository
 
 import (
 	"log"
-	"rest-api/server/db/entity"
+
+	"github.com/l4rma/go-rest-api/server/db/entity"
 
 	"github.com/jmoiron/sqlx"
 )

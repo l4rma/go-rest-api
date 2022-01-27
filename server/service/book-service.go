@@ -2,9 +2,10 @@ package service
 
 import (
 	"errors"
-	"rest-api/server/db/entity"
-	"rest-api/server/db/repository"
-	repo "rest-api/server/db/repository"
+
+	"github.com/l4rma/go-rest-api/server/db/entity"
+	"github.com/l4rma/go-rest-api/server/db/repository"
+	repo "github.com/l4rma/go-rest-api/server/db/repository"
 )
 
 var (
@@ -37,9 +38,8 @@ func (*service) Validate(book *entity.Book) error {
 }
 
 func (*service) Create(book *entity.Book) (int64, error) {
-	return bookRepo.Save(book)		
+	return bookRepo.Save(book)
 }
-
 
 func (*service) FindAll() ([]*entity.Book, error) {
 	return bookRepo.FindAll()

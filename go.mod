@@ -1,4 +1,4 @@
-module rest-api
+module github.com/l4rma/go-rest-api
 
 go 1.17
 

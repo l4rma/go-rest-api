@@ -3,23 +3,23 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"rest-api/server/controller"
-	"rest-api/server/db/repository"
-	"rest-api/server/http"
-	"rest-api/server/service"
+	"os"
+
+	"github.com/l4rma/go-rest-api/server/controller"
+	"github.com/l4rma/go-rest-api/server/db/repository"
+	router "github.com/l4rma/go-rest-api/server/http"
+	"github.com/l4rma/go-rest-api/server/service"
 	_ "github.com/lib/pq"
 )
 
 var (
-	bookRepository repository.BookRepository = repository.NewPostgresRepository() 
-	bookService service.BookService = service.NewBookService(bookRepository)
+	bookRepository repository.BookRepository = repository.NewPostgresRepository()
+	bookService    service.BookService       = service.NewBookService(bookRepository)
 	bookController controller.BookController = controller.NewBookController(bookService)
-	httpRouter router.Router = router.NewMuxRouter()
+	httpRouter     router.Router             = router.NewMuxRouter()
 )
 
 func main() {
-	port := ":8080"
-
 	r := bookRepository
 	err := r.Open()
 	if err != nil {
@@ -33,11 +33,11 @@ func main() {
 
 	httpRouter.GET("/books", bookController.GetBooks)
 	httpRouter.POST("/books", bookController.AddBook)
-	
+
 	books, err := r.FindAll()
 	if len(books) < 1 {
 		r.InsertDummyData(r)
 	}
 
-	httpRouter.SERVE(port)
+	httpRouter.SERVE(os.Getenv("PORT"))
 }
