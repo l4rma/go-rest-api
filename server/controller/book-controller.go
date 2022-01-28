@@ -3,6 +3,8 @@ package controller
 import (
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/l4rma/go-rest-api/server/db/entity"
 	"github.com/l4rma/go-rest-api/server/service"
@@ -17,6 +19,7 @@ var (
 type BookController interface {
 	GetBooks(w http.ResponseWriter, r *http.Request)
 	AddBook(w http.ResponseWriter, r *http.Request)
+	DeleteBookById(w http.ResponseWriter, r *http.Request)
 }
 
 func NewBookController(service service.BookService) BookController {
@@ -72,4 +75,28 @@ func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
 	data := mapBookToJSON(book)
 
 	sendResponse(w, r, data, http.StatusOK)
+}
+
+func (*controller) DeleteBookById(w http.ResponseWriter, r *http.Request) {
+	// Get ID from request
+	reqUrl := strings.Split(r.URL.String(), "/")
+	if len(reqUrl) != 5 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	id, _ := strconv.ParseInt(reqUrl[4], 10, 64)
+
+	// Check if book exists
+
+	// Delete book
+	err := bookService.Delete(id)
+	if err != nil {
+		log.Printf("Failed to delete Book. Error:%v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Error deleting book"))
+		return
+	}
+
+	log.Printf("Deleted book with id: %v", id)
+	sendResponse(w, r, nil, http.StatusOK)
 }

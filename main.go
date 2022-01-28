@@ -33,6 +33,7 @@ func main() {
 
 	httpRouter.GET("/books", bookController.GetBooks)
 	httpRouter.POST("/books", bookController.AddBook)
+	httpRouter.DELETE("/api/books/delete/{id}", bookController.DeleteBookById)
 
 	books, err := r.FindAll()
 	if len(books) < 1 {

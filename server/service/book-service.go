@@ -16,6 +16,7 @@ type BookService interface {
 	Validate(book *entity.Book) error
 	Create(book *entity.Book) (int64, error)
 	FindAll() ([]*entity.Book, error)
+	Delete(id int64) error
 }
 
 type service struct{}
@@ -35,6 +36,9 @@ func (*service) Validate(book *entity.Book) error {
 		return err
 	}
 	return nil
+}
+func (*service) Delete(id int64) error {
+	return bookRepo.DeleteById(id)
 }
 
 func (*service) Create(book *entity.Book) (int64, error) {

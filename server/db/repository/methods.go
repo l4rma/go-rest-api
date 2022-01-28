@@ -21,3 +21,11 @@ func (d *repo) FindAll() ([]*entity.Book, error) {
 
 	return books, nil
 }
+
+func (d *repo) DeleteById(id int64) error {
+	_, err := d.db.Exec(deleteBook, id)
+	if err != nil {
+		return err
+	}
+	return err
+}
