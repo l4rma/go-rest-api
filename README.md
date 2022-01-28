@@ -7,7 +7,8 @@ Me trying to learn golang by coding a rest api using gorilla/mux and postgres.
 * [x] "/" => "Hello world!"
 * [ ] Serve some static pages (home, error)
 * [x] Database
-* [x] GET request
+* [x] GET request (get all)
+* [ ] GET request (get by id)
 * [x] POST request
 * [x] Cleaner archetecture
 * [x] Tests (service layer)
@@ -15,5 +16,5 @@ Me trying to learn golang by coding a rest api using gorilla/mux and postgres.
 * [x] docker-compose
 * [ ] PUT request
 * [ ] PATCH request
-* [ ] DELETE request
+* [x] DELETE request
 * [ ] MOAR Tests!
