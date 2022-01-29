@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS books
 
 var (
 	insertBook = `INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING id`
+	getBook    = `SELECT * FROM books WHERE id = $1;`
 	deleteBook = `DELETE FROM books WHERE id = $1;`
 )

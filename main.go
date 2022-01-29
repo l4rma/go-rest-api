@@ -32,6 +32,7 @@ func main() {
 	})
 
 	httpRouter.GET("/api/books", bookController.GetBooks)
+	httpRouter.GET("/api/books/{id}", bookController.GetBookById)
 	httpRouter.POST("/api/books", bookController.AddBook)
 	httpRouter.DELETE("/api/books/delete/{id}", bookController.DeleteBookById)
 

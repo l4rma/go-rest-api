@@ -11,6 +11,15 @@ func (d *repo) Save(book *entity.Book) (int64, error) {
 
 	return id, err
 }
+func (d *repo) FindById(id int64) (*entity.Book, error) {
+	book := &entity.Book{}
+	err := d.db.Get(book, "SELECT * FROM books WHERE id=$1", id)
+	if err != nil {
+		return book, err
+	}
+
+	return book, nil
+}
 
 func (d *repo) FindAll() ([]*entity.Book, error) {
 	var books []*entity.Book

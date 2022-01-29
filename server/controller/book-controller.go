@@ -18,6 +18,7 @@ var (
 
 type BookController interface {
 	GetBooks(w http.ResponseWriter, r *http.Request)
+	GetBookById(w http.ResponseWriter, r *http.Request)
 	AddBook(w http.ResponseWriter, r *http.Request)
 	DeleteBookById(w http.ResponseWriter, r *http.Request)
 }
@@ -39,6 +40,28 @@ func (*controller) GetBooks(w http.ResponseWriter, r *http.Request) {
 	for i, book := range books {
 		data[i] = mapBookToJSON(book)
 	}
+
+	sendResponse(w, r, data, http.StatusOK)
+}
+
+func (*controller) GetBookById(w http.ResponseWriter, r *http.Request) {
+	// Get ID from request
+	reqUrl := strings.Split(r.URL.String(), "/")
+	if len(reqUrl) != 4 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	id, _ := strconv.ParseInt(reqUrl[3], 10, 64)
+
+	// Get Book
+	book, err := bookService.FindbyId(id)
+	if err != nil {
+		log.Printf("Failed to get book, Error:%v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Error getting books"))
+		return
+	}
+	var data = mapBookToJSON(book)
 
 	sendResponse(w, r, data, http.StatusOK)
 }
