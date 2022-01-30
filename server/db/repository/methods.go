@@ -2,8 +2,8 @@ package repository
 
 import "github.com/l4rma/go-rest-api/server/db/entity"
 
-func (d *repo) Save(book *entity.Book) (int64, error) {
-	res, err := d.db.Exec(insertBook, book.Title, book.Author, book.Year)
+func (d *pgBookRepository) Save(book *entity.Book) (int64, error) {
+	res, err := db.Exec(insertBook, book.Title, book.Author, book.Year)
 	if err != nil {
 		return 0, err
 	}
@@ -11,9 +11,9 @@ func (d *repo) Save(book *entity.Book) (int64, error) {
 
 	return id, err
 }
-func (d *repo) FindById(id int64) (*entity.Book, error) {
+func (d *pgBookRepository) FindById(id int64) (*entity.Book, error) {
 	book := &entity.Book{}
-	err := d.db.Get(book, "SELECT * FROM books WHERE id=$1", id)
+	err := db.Get(book, "SELECT * FROM books WHERE id=$1", id)
 	if err != nil {
 		return book, err
 	}
@@ -21,9 +21,9 @@ func (d *repo) FindById(id int64) (*entity.Book, error) {
 	return book, nil
 }
 
-func (d *repo) FindAll() ([]*entity.Book, error) {
+func (d *pgBookRepository) FindAll() ([]*entity.Book, error) {
 	var books []*entity.Book
-	err := d.db.Select(&books, "SELECT * FROM books")
+	err := db.Select(&books, "SELECT * FROM books")
 	if err != nil {
 		return books, err
 	}
@@ -31,8 +31,8 @@ func (d *repo) FindAll() ([]*entity.Book, error) {
 	return books, nil
 }
 
-func (d *repo) DeleteById(id int64) error {
-	_, err := d.db.Exec(deleteBook, id)
+func (d *pgBookRepository) DeleteById(id int64) error {
+	_, err := db.Exec(deleteBook, id)
 	if err != nil {
 		return err
 	}

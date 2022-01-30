@@ -5,35 +5,33 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/l4rma/go-rest-api/server/db/entity"
+
+	_ "github.com/lib/pq"
 )
 
-type repo struct {
+var (
 	db *sqlx.DB
-}
+)
+
+type pgBookRepository struct{}
 
 func NewPostgresRepository() BookRepository {
-	return &repo{}
-}
-
-func (d *repo) Open() error {
 	pg, err := sqlx.Open("postgres", pgConnStr)
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
-	log.Println("Connected to database.")
+	//defer pg.Close()
+
+	log.Println("Connected to postgres database.")
 
 	pg.MustExec(createTableBooks)
 
-	d.db = pg
+	db = pg
 
-	return nil
+	return &pgBookRepository{}
 }
 
-func (d *repo) Close() error {
-	return d.db.Close()
-}
-
-func (d *repo) InsertDummyData(repo BookRepository) {
+func (d *pgBookRepository) InsertDummyData(repo BookRepository) {
 	books := []*entity.Book{
 		{Title: "Hakkebakkeskogen", Author: "Thorbjørn Egner", Year: 1953},
 		{Title: "Folk og røvere i Kardemomme by", Author: "Thorbjørn Egner", Year: 1955},

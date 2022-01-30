@@ -9,7 +9,6 @@ import (
 	"github.com/l4rma/go-rest-api/server/db/repository"
 	router "github.com/l4rma/go-rest-api/server/http"
 	"github.com/l4rma/go-rest-api/server/service"
-	_ "github.com/lib/pq"
 )
 
 var (
@@ -20,12 +19,6 @@ var (
 )
 
 func main() {
-	r := bookRepository
-	err := r.Open()
-	if err != nil {
-		panic(err)
-	}
-	defer r.Close()
 
 	httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hello World!")
@@ -35,11 +28,6 @@ func main() {
 	httpRouter.GET("/api/books/{id}", bookController.GetBookById)
 	httpRouter.POST("/api/books", bookController.AddBook)
 	httpRouter.DELETE("/api/books/delete/{id}", bookController.DeleteBookById)
-
-	books, err := r.FindAll()
-	if len(books) < 1 {
-		r.InsertDummyData(r)
-	}
 
 	httpRouter.SERVE(os.Getenv("PORT"))
 }
