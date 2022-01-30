@@ -1,24 +1,15 @@
 ## Restfull API written in GO
 
-Me trying to learn golang by coding a rest api using gorilla/mux and postgres.
+Me trying to learn golang by coding a rest api with clean archetecture
+following the SOLID principles. So far I've refactored and extracted all
+dependencies and implemented interfaces so that its easy to swap out db
+(postgres) and routing (gorilla/mux). Then added SQLite as a DB which I (will)
+use for testing.
 
-### Functionality:
-Create, Read, ~~Update~~ and Delete books.
-
-### How to use:
-Run db and server in docker with docker-compose: ``$ docker-compose up``
-
-#### Testing with curl:
-* GET all books : ``curl localhost:8080/api/books``
-* GET book with id = 1: ``curl localhost:8080/api/books/1``
-* Create a book: ``curl localhost:8080/api/books -H "application/json" -d '{"title":"<title>","author":"<author>", "year": 2022}' -X POST``
-* Delete a book with id = 1: ``curl localhost:8080/api/books/delete/1 -X DELETE``
-
-### Todo:
-
+### Status:
 * [x] "/" => "Hello world!"
 * [ ] Serve some static pages (home, error)
-* [x] Database
+* [x] Database (postgres in docker)
 * [x] GET request (get all)
 * [x] GET request (get by id)
 * [x] POST request
@@ -26,6 +17,9 @@ Run db and server in docker with docker-compose: ``$ docker-compose up``
 * [x] Tests (service layer)
 * [x] Dockerfile
 * [x] docker-compose
+* [x] Improove README.md
+* [ ] Tests (controller) - in progress
+* [ ] Alternative DB (SQLITE) - in progress
 * [ ] PUT request
 * [ ] PATCH request
 * [x] DELETE request
@@ -33,3 +27,28 @@ Run db and server in docker with docker-compose: ``$ docker-compose up``
 * [ ] Implement swagger
 * [ ] Add Authorization
 
+
+### How to use:
+Run db and server in docker with docker-compose: 
+```shell
+docker-compose up
+```
+
+Testing with curl:
+
+Get all books: 
+```shell
+curl localhost:8080/api/books
+```
+Get book with id = 1: 
+```shell
+curl localhost:8080/api/books/1
+```
+Create a book:
+```shell
+curl localhost:8080/api/books -H "application/json" -d '{"title":"<title>","author":"<author>", "year": 2022}' -X POST
+```
+Delete a book with id = 1:
+```shell
+curl localhost:8080/api/books/delete/1 -X DELETE
+```
