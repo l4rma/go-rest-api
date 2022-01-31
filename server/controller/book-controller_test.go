@@ -50,5 +50,20 @@ func TestAddBook(t *testing.T) {
 }
 
 func TestGetBook(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/api/books", nil)
+	res := httptest.NewRecorder()
 
+	handler := http.HandlerFunc(bookController.GetBooks)
+	handler.ServeHTTP(res, req)
+
+	status := res.Code
+
+	if status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code. Got:%v, Expected:%v", status, http.StatusOK)
+	}
+
+	var books []*entity.Book
+	json.NewDecoder(io.Reader(res.Body)).Decode(&books)
+	assert.NotNil(t, books)
+	assert.GreaterOrEqual(t, len(books), 1)
 }

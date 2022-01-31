@@ -43,6 +43,14 @@ func (mock *MockRepository) InsertDummyData(repo repository.BookRepository) {
 	return
 }
 
+func (mock *MockRepository) DeleteById(id int64) error {
+	return nil
+}
+
+func (mock *MockRepository) FindById(id int64) (*entity.Book, error) {
+	return nil, nil
+}
+
 func TestValidateNilBook(t *testing.T) {
 	testService := NewBookService(nil)
 

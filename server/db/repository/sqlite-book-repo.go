@@ -51,7 +51,7 @@ func (*sqliteRepo) FindById(id int64) (*entity.Book, error) {
 }
 
 func (*sqliteRepo) FindAll() ([]*entity.Book, error) {
-	return []*entity.Book{}, nil
+	return []*entity.Book{{Title: "TestTittel", Author: "TestAuthor", Year: 2022}}, nil
 }
 func (*sqliteRepo) DeleteById(id int64) error {
 	return nil
