@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/l4rma/go-rest-api/server/controller"
@@ -20,9 +18,9 @@ var (
 
 func main() {
 
-	httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello World!")
-	})
+	//httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
+	//	fmt.Fprintln(w, "Hello World!")
+	//})
 
 	httpRouter.GET("/api/books", bookController.GetBooks)
 	httpRouter.GET("/api/books/{id}", bookController.GetBookById)

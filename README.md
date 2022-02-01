@@ -8,7 +8,8 @@ use for testing.
 
 ### Status:
 * [x] "/" => "Hello world!"
-* [ ] Serve some static pages (home, error)
+* [x] Serve static page
+* [ ] Serve some static pages (home, errors)
 * [x] Database (postgres in docker)
 * [x] GET request (get all)
 * [x] GET request (get by id)

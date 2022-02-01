@@ -35,8 +35,13 @@ func (*muxRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Reque
 	muxDispatcher.HandleFunc(uri, f).Methods(http.MethodDelete)
 }
 
-// Start server, listening on port port
+// Start server, handle "/" serving fileserver, listening on port port
+// TODO: Abstract/extract fileserver handling
 func (*muxRouter) SERVE(port string) {
 	log.Printf("Mux HTTP server running on: http://localhost%v", port)
+
+	fs := http.FileServer(http.Dir("./static"))
+	muxDispatcher.Handle("/", fs)
+
 	http.ListenAndServe(port, muxDispatcher)
 }
