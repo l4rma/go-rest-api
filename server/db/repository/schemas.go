@@ -1,5 +1,6 @@
 package repository
 
+// Create table
 const createTableBooks = `
 CREATE TABLE IF NOT EXISTS books
 (
@@ -10,6 +11,7 @@ CREATE TABLE IF NOT EXISTS books
 )
 `
 
+// SQL queries: add book to db, retrieve book from db, delete book in db.
 var (
 	insertBook = `INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING id`
 	getBook    = `SELECT * FROM books WHERE id = $1;`

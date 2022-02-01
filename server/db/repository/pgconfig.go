@@ -2,6 +2,8 @@ package repository
 
 import "fmt"
 
+// Connection string used to connect to the postgres DB
+// TODO: use .env file
 var (
 	dbUsername = "postgres"
 	dbPassword = "postgres"

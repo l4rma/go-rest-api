@@ -27,20 +27,29 @@ const (
 )
 
 func TestAddBook(t *testing.T) {
+	// Create json book entity
 	bookJson := []byte(`{"title":"TestTittel","author":"TestAuthor","year":2022}`)
+
+	// Create http request
 	req, _ := http.NewRequest("POST", "/api/books", bytes.NewBuffer(bookJson))
+
+	// Create handler
 	handler := http.HandlerFunc(bookController.AddBook)
 
+	// Catch response
 	res := httptest.NewRecorder()
 
+	// Serve request
 	handler.ServeHTTP(res, req)
 
+	// Get response status code
 	status := res.Code
 
 	if status != http.StatusOK {
 		t.Errorf("Handler returned wrong status code. Got:%v, Expected:%v", status, http.StatusOK)
 	}
 
+	// Assert title, author and year of added book
 	var book entity.Book
 	json.NewDecoder(io.Reader(res.Body)).Decode(&book)
 	assert.NotNil(t, book.ID)
@@ -49,6 +58,7 @@ func TestAddBook(t *testing.T) {
 	assert.Equal(t, int16(2022), book.Year)
 }
 
+// TODO: Test Get all books
 func TestGetBook(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/api/books", nil)
 	res := httptest.NewRecorder()

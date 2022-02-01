@@ -52,10 +52,13 @@ func (mock *MockRepository) FindById(id int64) (*entity.Book, error) {
 }
 
 func TestValidateNilBook(t *testing.T) {
+	// Create service with no repository
 	testService := NewBookService(nil)
 
+	// Validate a book which is nil
 	err := testService.Validate(nil)
 
+	// Expect book to be nil and validation to fail
 	assert.NotNil(t, err)
 	assert.Equal(t, "The book is nil", err.Error())
 }
@@ -65,34 +68,42 @@ func TestValidateEmptyTitle(t *testing.T) {
 
 	testService := NewBookService(nil)
 
+	// Validate book with no title
 	err := testService.Validate(book)
 
+	// Expect validation to fail
 	assert.NotNil(t, err)
 	assert.Equal(t, "The book has no title", err.Error())
 }
 
 func TestCreate(t *testing.T) {
+	// Mock repository
 	mockRepo := new(MockRepository)
 
 	var id int64 = 1
 	var year int16 = 2022
 	book := entity.Book{ID: id, Title: "BokTittel", Author: "Lars", Year: year}
 
-	// Mock repo method return value
+	// Mock return value of repo method
 	mockRepo.On("Save").Return(id, nil)
 
 	testService := NewBookService(mockRepo)
 
+	// Create book
 	result, _ := testService.Create(&book)
 
+	// Expect repo to return ID
 	mockRepo.AssertExpectations(t)
 
+	// Expect returned ID to match book.ID
 	assert.Equal(t, id, result)
 }
 
 func TestFindAll(t *testing.T) {
+	// Mock repository
 	mockRepo := new(MockRepository)
 
+	// Create book entity
 	var id int64 = 1
 	var year int16 = 2022
 	book := entity.Book{ID: id, Title: "BokTittel", Author: "Lars", Year: year}
@@ -102,6 +113,7 @@ func TestFindAll(t *testing.T) {
 
 	testService := NewBookService(mockRepo)
 
+	// Retrieve all books from mocked db
 	result, _ := testService.FindAll()
 
 	// Mock Assertion: Behavioral

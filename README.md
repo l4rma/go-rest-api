@@ -18,6 +18,7 @@ use for testing.
 * [x] Dockerfile
 * [x] docker-compose
 * [x] Improove README.md
+* [x] Add comments to code
 * [ ] Tests (controller) - in progress
 * [ ] Alternative DB (SQLITE) - in progress
 * [ ] PUT request

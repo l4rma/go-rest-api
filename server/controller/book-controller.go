@@ -10,12 +10,14 @@ import (
 	"github.com/l4rma/go-rest-api/server/service"
 )
 
+// Controller struct
 type controller struct{}
 
 var (
 	bookService service.BookService
 )
 
+// BookController interface
 type BookController interface {
 	GetBooks(w http.ResponseWriter, r *http.Request)
 	GetBookById(w http.ResponseWriter, r *http.Request)
@@ -23,12 +25,15 @@ type BookController interface {
 	DeleteBookById(w http.ResponseWriter, r *http.Request)
 }
 
+// Initializa new bookController
 func NewBookController(service service.BookService) BookController {
 	bookService = service
 	return &controller{}
 }
 
+// Retrieve books from db
 func (*controller) GetBooks(w http.ResponseWriter, r *http.Request) {
+	// Retrieve all books
 	books, err := bookService.FindAll()
 	if err != nil {
 		log.Printf("Failed to get books, Error:%v", err)
@@ -36,14 +41,20 @@ func (*controller) GetBooks(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Error getting books"))
 		return
 	}
+	// Create a slice of JsonBook entities
 	var data = make([]entity.JsonBook, len(books))
+
+	// Fill slice with books from service request
 	for i, book := range books {
+		// map db entities to json entities
 		data[i] = mapBookToJSON(book)
 	}
 
+	// Send response with book slice as body
 	sendResponse(w, r, data, http.StatusOK)
 }
 
+// Retrieve book from db with matching ID
 func (*controller) GetBookById(w http.ResponseWriter, r *http.Request) {
 	// Get ID from request
 	reqUrl := strings.Split(r.URL.String(), "/")
@@ -66,6 +77,7 @@ func (*controller) GetBookById(w http.ResponseWriter, r *http.Request) {
 	sendResponse(w, r, data, http.StatusOK)
 }
 
+// Add book to db
 func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
 	// Get JSON from request body
 	reqBook := entity.BookRequest{}
@@ -100,6 +112,7 @@ func (*controller) AddBook(w http.ResponseWriter, r *http.Request) {
 	sendResponse(w, r, data, http.StatusOK)
 }
 
+// Delete book from db
 func (*controller) DeleteBookById(w http.ResponseWriter, r *http.Request) {
 	// Get ID from request
 	reqUrl := strings.Split(r.URL.String(), "/")
